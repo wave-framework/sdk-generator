@@ -4,23 +4,33 @@
  * @author     Michael Calcinai <michael@calcin.ai>
  */
 
+declare(strict_types=1);
+
 namespace Wave\SDK\ModelGenerator\Loader;
 
 use Wave\SDK\ModelGenerator\Loader;
 
 class File extends Loader {
 
-    private $file;
+    private string $file;
 
     /**
-     * File constructor.
-     * @param array $config
+     * @param array{file: string} $config
      */
-    public function __construct($config) {
+    public function __construct(array $config) {
+        if(empty($config['file'])){
+            throw new \InvalidArgumentException('File loader configuration requires a "file" key');
+        }
+
         $this->file = $config['file'];
     }
 
-    public function getContent() {
-        return file_get_contents($this->file);
+    public function getContent(): string{
+        $content = @file_get_contents($this->file);
+        if($content === false){
+            throw new \RuntimeException(sprintf('Failed to read file [%s]', $this->file));
+        }
+
+        return $content;
     }
 }

@@ -3,6 +3,7 @@
   "description": "Generates a schema file describing a wave app, then builds a PHP SDK from it",
 
   "require": {
+    "php": "^8.1",
     "phindmarsh/statham": "1.0.1",
     "twig/twig": "3.*"
   },
