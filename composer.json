@@ -4,7 +4,7 @@
 
   "require": {
     "php": "^8.1",
-    "phindmarsh/statham": "1.0.3",
+    "phindmarsh/statham": "1.0.4",
     "twig/twig": "3.*"
   },
 
