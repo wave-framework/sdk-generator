@@ -3,7 +3,7 @@
 
 namespace Wave\SDK\SchemaGenerator;
 
-
+#[\AllowDynamicProperties]
 class Definition {
 
     public function __construct($data = null){

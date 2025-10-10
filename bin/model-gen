@@ -1,12 +1,13 @@
 #!/usr/bin/env php
 <?php
+declare(strict_types=1);
 
 
 use Wave\SDK\ModelGenerator\Generator;
 use Wave\SDK\ModelGenerator\Input\Swagger;
 
 ini_set('display_errors', '1');
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 if(!file_exists('bootstrap.php'))
     sg_error("This file should be run from the application root");

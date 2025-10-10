@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+declare(strict_types=1);
 
 use Wave\Config;
 use Wave\SDK\SchemaGenerator\Output\Swagger;
@@ -7,7 +8,7 @@ use Wave\SDK\SchemaGenerator\Parser\FromRoutes;
 use Symfony\Component\Yaml\Yaml;
 
 ini_set('display_errors', '1');
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 if(!file_exists('bootstrap.php'))
     sg_error("This file should be run from the application root");
@@ -39,8 +40,18 @@ if (Config::get('app')->offsetExists('meta')){
     $meta_info = Config::get('app')->meta->getArrayCopy();
 }
 
-if('' !== $git_path = trim(shell_exec('which git'))){
-    $meta_info['version'] = trim(shell_exec(sprintf('%s rev-parse --verify --short HEAD', $git_path)));
+$git_path_output = shell_exec('command -v git');
+if(is_string($git_path_output)){
+    $git_path = trim($git_path_output);
+    if($git_path !== ''){
+        $git_version_output = shell_exec(sprintf('%s rev-parse --verify --short HEAD', escapeshellarg($git_path)));
+        if(is_string($git_version_output)){
+            $git_version_output = trim($git_version_output);
+            if($git_version_output !== ''){
+                $meta_info['version'] = $git_version_output;
+            }
+        }
+    }
 }
 
 $output = $generator->generate($meta_info);
